@@ -1,0 +1,7 @@
+name: PulseSync Controls
+package: pulsesync-controls
+version: 1.0.0
+description: Yandex Music management with custom theme for PulseSync
+author: Wolfy
+license: MIT
+repository: "https://github.com/WolfySoCute/deckboard-pulsesync-controls"

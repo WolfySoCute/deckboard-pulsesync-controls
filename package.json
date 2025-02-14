@@ -1,0 +1,21 @@
+{
+    "name": "pulsesync-controls",
+    "version": "1.0.0",
+    "description": "Yandex Music management with custom theme for PulseSync",
+    "main": "index.js",
+    "scripts": {
+        "build": "deckboard-kit --build",
+        "install": "deckboard-kit --install"
+    },
+    "author": {
+        "name": "wolfy"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "deckboard-kit": "^0.3.0",
+        "ws": "^8.18.0"
+    },
+    "devDependencies": {
+        "deckboard-kit-cli": "^1.0.0"
+    }
+}
