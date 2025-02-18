@@ -60,6 +60,19 @@ class PulseSyncExtension extends Extension {
 						type: INPUT_METHOD.INPUT_TEXT
 					},
 				],
+			},
+			{
+				label: "Set Volume",
+				value: "volume-set",
+				icon: "volume-off",
+				color: '#3C78D8',
+				input: [
+					{
+						label: "Volume",
+						ref: "setVolume",
+						type: INPUT_METHOD.INPUT_TEXT
+					},
+				],
 			}
 		];
 		this.configs = {
@@ -73,7 +86,6 @@ class PulseSyncExtension extends Extension {
 		this.initExtension();
 	}
 
-	// Executes when the extensions loaded every time the app start.
 	initExtension() {
 		this.initPlugin().catch((e) => log.error(e));
 	}
@@ -94,7 +106,7 @@ class PulseSyncExtension extends Extension {
 			this.websocket.on('connection', (ws) => {
 				this.clients.add(ws);
 
-				ws.send(JSON.stringify({ type: 'connected', data: 'Successfully connected!' }));
+				ws.send(JSON.stringify({ cmd: 'DISPATCH', evt: 'READY' }));
 
 				ws.on('close', () => {
 					this.clients.delete(ws);
@@ -124,15 +136,17 @@ class PulseSyncExtension extends Extension {
 	execute(action, args) {
 		switch (action) {
 			case "forward":
-				return this.broadcast({ type: 'forward' });
+				return this.broadcast({ cmd: 'CHANGE_SONG', data: { direction: 'FORWARD' } });
 			case "backward":
-				return this.broadcast({ type: 'backward' });
+				return this.broadcast({ cmd: 'CHANGE_SONG', data: { direction: 'BACKWARD' } });
 			case "pause":
-				return this.broadcast({ type: 'pause' });
+				return this.broadcast({ cmd: 'PAUSE' });
 			case "volume-up":
-				return this.broadcast({ type: 'volume-up', data: args.upPercent || 5 });
+				return this.broadcast({ cmd: 'CHANGE_VOLUME', data: { action: 'INCREASE', value: Number(args.upPercent) || 5 } });
 			case "volume-down":
-				return this.broadcast({ type: 'volume-down', data: args.downPercent || 5 });
+				return this.broadcast({ cmd: 'CHANGE_VOLUME', data: { action: 'DECREASE', value: Number(args.downPercent) || 5 } });
+			case "volume-set":
+				return this.broadcast({ cmd: 'CHANGE_VOLUME', data: { action: 'SET', value: Number(args.setVolume) || 5 } });
 		}
 	}
 }
